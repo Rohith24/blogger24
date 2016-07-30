@@ -59,6 +59,7 @@ def blog_post_create(request):
 
 def blog_post_detail(request, slug=None):
     instance = get_object_or_404(Post, slug=slug)
+
     if instance.publish > timezone.now().date() or instance.draft:
         if not request.user.is_staff or not request.user.is_superuser:
             return render(request, "error.html", {"message":"as admin"})
