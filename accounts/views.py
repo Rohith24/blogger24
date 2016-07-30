@@ -8,6 +8,8 @@ from django.contrib.auth import (
 from django.shortcuts import render, redirect
 
 from .forms import UserLoginForm, UserRegisterForm
+from django.utils import timezone
+
 
 def login_view(request):
     print(request.user.is_authenticated())
@@ -34,6 +36,7 @@ def register_view(request):
         user = form.save(commit=False)
         password = form.cleaned_data.get('password')
         user.set_password(password)
+        user.last_login= timezone.now()
         user.save()
         new_user = authenticate(username=user.username, password=password)
         login(request, new_user)
